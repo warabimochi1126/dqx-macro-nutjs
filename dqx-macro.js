@@ -65,7 +65,7 @@ function getRandomInt(min, max) {
   }
 
   await sleep(500 + getRandomInt(500, 1000));
-  await keyboard,type(Key.Up);
+  await keyboard.type(Key.Up);
   await sleep(500 + getRandomInt(500, 1000));
   await keyboard.type(Key.Enter);
 

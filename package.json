@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@nut-tree/nut-js": "^3.1.2",
-    "tesseract.js": "^5.0.4"
+    "@nut-tree/nut-js": "^3.1.2"
   }
 }
