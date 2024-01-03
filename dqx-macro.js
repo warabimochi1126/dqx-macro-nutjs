@@ -37,7 +37,6 @@ function getRandomInt(min, max) {
   // "スタート"選択
   // "ひっさつ"表示時の判定が必要でないように上キーでずらす
   //  何もない場合の分岐
-  //  tesseract.jsでうまくやる
   
   if(true) {
 
