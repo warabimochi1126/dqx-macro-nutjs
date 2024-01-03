@@ -22,6 +22,7 @@ function getRandomInt(min, max) {
   await keyboard.type(Key.Enter);
 
   // 装備選択
+  // ３回に１回下キーを入れる必要がある
   await sleep(2000 + getRandomInt(500, 1500));
   await keyboard.type(Key.Enter);
 
@@ -64,3 +65,6 @@ function getRandomInt(min, max) {
   // 分岐終了
   await keyboard.type(Key.Enter);
 })();
+
+
+module.exports = { sleep }
