@@ -3,7 +3,7 @@ const { createWorker } = require('tesseract.js');
 
 (async () => {
   const worker = await createWorker('jpn');
-  const { data: { text } } = await worker.recognize('temp.png');
+  const { data: { text } } = await worker.recognize('temp4.png');
   console.log(text);
   let sortedString = text.replace(/\s/g, "");
   console.log(sortedString);

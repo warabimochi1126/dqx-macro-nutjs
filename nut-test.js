@@ -7,5 +7,5 @@ function sleep(ms) {
 (async () => {
   await sleep(1000);
   console.log(await screen.grab());
-  await screen.captureRegion("temp", new Region(630, 875, 660, 120));
+  await screen.captureRegion("temp4", new Region(630, 875, 660, 120));
 })();
