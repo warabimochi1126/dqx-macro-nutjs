@@ -12,8 +12,10 @@ function getRandomInt(min, max) {
 const typeDelay = 1000;
 let itemDownSelectFlag = false;
 let lampBreakFlag = true;
-
+let roopCount = 1;
 (async () => {
+    // ループ回数を表示する
+    console.log(`${roopCount}回目のループです。`);
     await sleep(1000);
     
     // 左キーを長押ししてログを飛ばす
@@ -37,6 +39,11 @@ let lampBreakFlag = true;
     while (true) {
         // ループに合わせる
         await keyboard.pressKey(Key.Left);
+
+        // ループ回数をカウントする
+        if (roopCount !== 1) {
+            console.log(`${roopCount}回目のループです。`);
+        } 
 
         // ランプが破損した時に処理側を合わせる
         if (lampBreakFlag) {
@@ -140,7 +147,8 @@ let lampBreakFlag = true;
         const parupundeFlagG = parupundeFlag.G;
         const parupundeFlagB = parupundeFlag.B;
 
-        if (parupundeFlagR >= 170 && parupundeFlagG >= 170 && parupundeFlagB >= 170) {
+        // ランプの白色と髪の毛ので発火しないように判別を付け加える
+        if (parupundeFlagR >= 180 && parupundeFlagR <= 220 && parupundeFlagG >= 180 && parupundeFlagG <= 220 && parupundeFlagB >= 180 && parupundeFlagB <= 220) {
             console.log(`パルプンデが発生したと判定された:${parupundeFlag}`);
 
             await keyboard.type(Key.Enter);
@@ -149,6 +157,7 @@ let lampBreakFlag = true;
             await keyboard.type(Key.Escape);
 
             // TODO:埋め尽くしかそれ以外か判定する
+            await sleep(500);
             const umetukusiFlag = await screen.colorAt(new Point(1196, 930));
             const umetukusiFlagR = umetukusiFlag.R;
             const umetukusiFlagG = umetukusiFlag.G;
@@ -224,6 +233,7 @@ let lampBreakFlag = true;
 
         // TODO:錬金上限に達したことを判定する
         // 最後の"!"の部分が白色かどうかで判定する
+        await sleep(500);
         const maxAlchemyFlag = await screen.colorAt(new Point(1038, 930));
         const maxAlchemyFlagR = maxAlchemyFlag.R;
         const maxAlchemyFlagG = maxAlchemyFlag.G;
@@ -242,9 +252,14 @@ let lampBreakFlag = true;
         // 錬金をするを選択する
         await sleep(500 + getRandomInt(0, 100));
         await keyboard.type(Key.Enter);
-
+        console.log("錬金をするを選択した");
+        // 選択した後に遅延入れとく
+        await sleep(1000);
 
         // ログカット
         console.log("-------------------------------------");
         }
 })();
+
+
+
