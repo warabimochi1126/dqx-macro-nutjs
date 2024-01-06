@@ -157,7 +157,7 @@ let roopCount = 1;
             await keyboard.type(Key.Escape);
 
             // TODO:埋め尽くしかそれ以外か判定する
-            await sleep(500);
+            await sleep(1000);
             const umetukusiFlag = await screen.colorAt(new Point(1196, 930));
             const umetukusiFlagR = umetukusiFlag.R;
             const umetukusiFlagG = umetukusiFlag.G;
