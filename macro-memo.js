@@ -13,6 +13,9 @@ const typeDelay = 1000;
 let itemDownSelectFlag = false;
 let lampBreakFlag = true;
 let roopCount = 1;
+
+// 装備１ページ分しか対応していない
+// TODO:１ページ錬金し終わった後に終了させる
 (async () => {
     // ループ回数を表示する
     console.log(`${roopCount}回目のループです。`);
@@ -157,13 +160,18 @@ let roopCount = 1;
             await keyboard.type(Key.Escape);
 
             // TODO:埋め尽くしかそれ以外か判定する
-            await sleep(1000);
+            // 埋め尽くしは付与効果ごとに場所が違うので付与効果文字列の最後の"!"に合わせる
+            // 最大MP+5は1182,930
+            // break;
+            await sleep(3000);
             const umetukusiFlag = await screen.colorAt(new Point(1196, 930));
             const umetukusiFlagR = umetukusiFlag.R;
             const umetukusiFlagG = umetukusiFlag.G;
             const umetukusiFlagB = umetukusiFlag.B;
 
-            if (umetukusiFlagR >= 170 && umetukusiFlagG >= 170 && umetukusiFlagB >= 170) {
+            const umetukusiMaxMpFlag = await screen.colorAt(new Point(1182, 930));
+
+            if (umetukusiFlagR >= 170 && umetukusiFlagG >= 170 && umetukusiFlagB >= 170 && umetukusiMaxMpFlag.R >= 170 && umetukusiMaxMpFlag.G >= 170 && umetukusiMaxMpFlag.B >= 170) {
                 console.log(`パルプンデ埋め尽くしが発生したと判定された:${umetukusiFlag}`);
 
                 await keyboard.type(Key.Enter);

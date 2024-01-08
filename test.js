@@ -8,7 +8,8 @@ function sleep(ms) {
   await sleep(1000);
   
   // await mouse.move(new Point(1116, 719));
-  console.log(await screen.colorAt(new Point(1116, 719)));
+  await mouse.move(new Point(1183, 930));
+  console.log(await screen.colorAt(new Point(1182, 930)));
 
   // await screen.captureRegion("rarara", new Region(854, 954, 500, 100));
   // console.log(await screen.colorAt(new Point(855, 954)));
