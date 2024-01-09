@@ -1,4 +1,5 @@
 const { keyboard, Key, screen, Region, mouse, straightTo, centerOf, imageResource, loadImage, Point } = require("@nut-tree/nut-js");
+const sharp = require("sharp");
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -7,11 +8,13 @@ function sleep(ms) {
 (async () => {
   await sleep(1000);
   
-  // await mouse.move(new Point(1116, 719));
-  await mouse.move(new Point(1183, 930));
-  console.log(await screen.colorAt(new Point(1182, 930)));
+  // await mouse.move(new Point(990, 264));
 
-  // await screen.captureRegion("rarara", new Region(854, 954, 500, 100));
-  // console.log(await screen.colorAt(new Point(855, 954)));
-  // console.log(await screen.colorAt(new Point(1037, 930)));
+  await screen.captureRegion("rarara", new Region(990, 264, 130, 30));
+
+  const temp = sharp("rarara.png");
+
+  temp.threshold(150);
+
+  temp.toFile("rararaoutput.png");
 })();
