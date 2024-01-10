@@ -77,6 +77,16 @@ async function main () {
     await nextStepOnCallback(() => isImageEqual(new Region(1125, 790, 80, 27), `${imgPath}/tukau.png`));
     await keyboard.type(Key.Enter);
 
+    // 錬金をする が出てきたらEnterを押す
+    await nextStepOnCallback(() => isImageEqual(new Region(1080, 790, 120, 27), `${imgPath}/renkinwosuru.png`));
+    await keyboard.type(Key.Enter);
+
+    // 錬金ランプ が出てきたらEnterを押す
+    await nextStepOnCallback(() => isImageEqual(new Region(990, 264, 130, 30), `${imgPath}/renkinranpu.png`));
+    await keyboard.type(Key.Enter);
+
+    // 新品のランプだったらダイアログが出てくるのでそれで新品かどうか判別する
+    const newLampFlag = 
 };
 
 

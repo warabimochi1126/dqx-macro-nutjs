@@ -10,7 +10,7 @@ function sleep(ms) {
   
   await mouse.move(new Point(1065, 280));
 
-  await screen.captureRegion("rarara", new Region(1125, 790, 80, 27));
+  await screen.captureRegion("rarara", new Region(990, 264, 130, 30));
 
   const temp = sharp("rarara.png");
 
