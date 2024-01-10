@@ -88,15 +88,15 @@ function getRandomInt(min, max) {
         await keyboard.type(Key.Down);
     }
     await sleep(100 + getRandomInt(0, 100));
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);     // ウデを選択する
 
     // なにをつくる？ で判定
     await nextStepOnCallback(() => isImageEqual(new Region(624, 264, 160, 30), `${imgPath}/naniwotukuru.png`));
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);     // 皮のてぶくろを選択する
 
     // ふつうに作る で判定
     await nextStepOnCallback(() => isImageEqual(new Region(1080, 810, 145, 36), `${imgPath}/hutuunitukuru.png`));
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);     // ふつうに作るを選択する
 
 
 
@@ -105,74 +105,86 @@ function getRandomInt(min, max) {
     
     // どうする で判定
     await nextStepOnCallback(() => isImageEqual(new Region(624, 264, 110, 30), `${imgPath}/dousuru.png`));
-    await keyboard.type(Key.Down);
+    await keyboard.type(Key.Down);      // とくぎにカーソルをあわせる
     await sleep(100 + getRandomInt(0, 100));
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);     // とくぎを選択する
 
     // とくぎ で判定
     await nextStepOnCallback(() => isImageEqual(new Region(624, 264, 70, 30), `${imgPath}/tokugi.png`));
-    await keyboard.type(Key.Right);
+    await keyboard.type(Key.Left);      // 3列目を選択する
     await sleep(100 + getRandomInt(0, 100));
-    await keyboard.type(Key.Up);
+    await keyboard.type(Key.Up);        // ぬいパワーシフトにカーソルを合わせる
     await sleep(100 + getRandomInt(0, 100));
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);     // ぬいパワーシフトを選択する
 
-    // 改心の判定ロジック
-    // どうする で判定
+    // 2週目移行の改心判定
     while (true) {
         await nextStepOnCallback(() => isImageEqual(new Region(624, 264, 110, 30), `${imgPath}/dousuru.png`));
         // 現在のぬいパワーが改心×2だったら
         await sleep(500);
         if (isImageEqual(new Region(1065, 282, 90, 33), `${imgPath}/kaisinkakeruni.png`)) {
             console.log("改心×2だと判定された");
-            await keyboard.type(Key.Enter);
+            await keyboard.type(Key.Enter);     // とくぎを選択する
             await sleep(100 + getRandomInt(0, 100));
-            await keyboard.type(Key.Down);
+            await keyboard.type(Key.Down);      // 精神統一にカーソルをあわせる
             await sleep(100 + getRandomInt(0, 100));
-            await keyboard.type(Key.Enter);
+            await keyboard.type(Key.Enter);     // 精神統一を選択する
             break;
         } else {
             console.log("改心×2ではないと判定された");
-            await keyboard.type(Key.Enter);
+            await keyboard.type(Key.Enter);     // とくぎを選択する
             await sleep(100 + getRandomInt(0, 100));
-            await keyboard.type(Key.Enter);
+            await keyboard.type(Key.Enter);     // ぬいパワーシフトを選択する
         }
     }
 
     // ねらいぬいロジック
     await nextStepOnCallback(() => isImageEqual(new Region(624, 264, 110, 30), `${imgPath}/dousuru.png`));
     await sleep(500);
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);     // とくぎを選択する
     await sleep(100 + getRandomInt(0, 100));
-    await keyboard.type(Key.Left);
+    await keyboard.type(Key.Left);      // 2列目を選択する
     await sleep(100 + getRandomInt(0, 100));
-    await keyboard.type(Key.Up);
+    await keyboard.type(Key.Up);        // ねらいぬいにカーソルをあわせる
     await sleep(100 + getRandomInt(0, 100));
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);     // ねらいぬいを選択する
     await sleep(100 + getRandomInt(0, 100));
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);     // 左上をねらいぬいする
     // 2週目以降
     for(let i = 0; i < 5; i++) {
         await nextStepOnCallback(() => isImageEqual(new Region(624, 264, 110, 30), `${imgPath}/dousuru.png`));
         await sleep(500);
-
-        await keyboard.type(Key.Enter);
+        await keyboard.type(Key.Enter);     // とくぎを選択する
         
-        await sleep(100 + getRandomInt(0, 100));
-        await keyboard.type(Key.Enter);
-
-        if (i == 0 && i == 1) {
+        if (i == 0) {
             await sleep(100 + getRandomInt(0, 100));
-            await keyboard.type(Key.Right);
+            await keyboard.type(Key.Enter);     // ねらいぬいを選択する    
+        }
+
+        if (i == 0) {
+            await sleep(100 + getRandomInt(0, 100));
+            await keyboard.type(Key.Right); // 上段真ん中のマスにカーソルをあわせる
     
             await sleep(100 + getRandomInt(0, 100));
-            await keyboard.type(Key.Enter);
+            await keyboard.type(Key.Enter); // 上段真ん中をねらいぬいする
+        } else if (i == 1) {
+            await sleep(100 + getRandomInt(0, 100));
+            await keyboard.type(Key.Right); // ぬいパワーシフトにカーソルをあわせる
+            await sleep(100 + getRandomInt(0, 100));
+            await keyboard.type(Key.Down);  // 精神統一にカーソルをあわせる
+            await sleep(100 + getRandomInt(0, 100));
+            await keyboard.type(Key.Enter); // 精神統一を選択する
         } else if (i == 2) {
             await sleep(100 + getRandomInt(0, 100));
-            await keyboard.type(Key.Down);
-
+            await keyboard.type(Key.Left);  // 2列目を選択する  
             await sleep(100 + getRandomInt(0, 100));
-            await keyboard.type(Key.Enter);
+            await keyboard.type(Key.Up);    // ねらいぬいにカーソルをあわせる
+            await sleep(100 + getRandomInt(0, 100));
+            await keyboard.type(Key.Enter); // ねらいぬいを選択する
+            await sleep(100 + getRandomInt(0, 100));
+            await keyboard.type(Key.Right); // 上段右にカーソルをあわせる
+            await sleep(100 + getRandomInt(0, 100));
+            await keyboard.type(Key.Enter); // 上段右にねらいぬいを行う
         } else {
             await sleep(100 + getRandomInt(0, 100));
             await keyboard.type(Key.Left);
