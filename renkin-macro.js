@@ -64,14 +64,17 @@ async function nextStepOnCallback(callback) {
 
 
 
+// コマンドラインの第1引数に錬金する装備数を入力する
 const imgPath = "correct-img/renkin";
+const itemCountMax = process.argv[2];
+const itemCount = 1;
 
 async function main () {
     // 起動待ち
     await sleep(1000);
 
     // 左キーを長押ししてログを飛ばす
-    await keyboard.pressKey(Key.Left);
+    // await keyboard.pressKey(Key.Left);  
 
     // つかう が出てきたらEnterを押す
     await nextStepOnCallback(() => isImageEqual(new Region(1125, 790, 80, 27), `${imgPath}/tukau.png`));
@@ -86,7 +89,83 @@ async function main () {
     await keyboard.type(Key.Enter);
 
     // 新品のランプだったらダイアログが出てくるのでそれで新品かどうか判別する
-    const newLampFlag = 
+    // 新しい錬金ランプのダイアログが出るまで待つ
+    await sleep(1000);
+    const newLampFlag = true;
+    if (newLampFlag) {
+        console.log("ランプが新品だと判定された");
+        await keyboard.type(Key.Up);
+        await keyboard.type(Key.Enter);
+    } else {
+        console.log("ランプが中古品だと判定された");
+    }
+
+    // どれを？ が出てきたら判定ロジックを走らせる
+    // 錬金効果の一番下が (錬金効果を付けよう) なら Enter そうでなければ Down 一番下まできたら Right
+    // 
+    await nextStepOnCallback(() => {});
+    if(isImageEqual()) {
+        await keyboard.type(Key.Down);
+        itemCount++;
+        console.log("錬金が最大数付いているという判定が下された");
+        if (itemCount % 10 == 0) {
+            // TODO: 4/4のような画像を複数枚用意して最後までいったか判定する
+            // 最後までいってたらそこで関数の実行を止める 
+
+            await keyboard.type(Key.Right);
+            // TODO:bot検知のために遅延を改良する
+            await sleep(100);
+            await keyboard.type(Key.Down);
+
+        }
+    } else {
+        console.log("錬金が最大数ついていないという判定が下された");
+    }
+
+    // TODO:後でsleep入れて検知誤魔化す
+    await keyboard.type(Key.Enter);
+
+
+    // どれをつける？ が出てきたらEnterを押す
+    await nextStepOnCallback(() => {});
+    await keyboard.type(Key.Enter);
+
+    // ふつうに付ける が出てきたらEnterを押す
+    await nextStepOnCallback(() => {});
+    await keyboard.type(Key.Enter);
+
+    // どうする？ が出てきたら効果のダイアログが発生しているか判定する
+    await nextStepOnCallback();
+    if (isImageEqual()) {
+        console.log("効果のダイアログが発生した");
+        // ダイアログが発生したタイミングで Left を長押しする
+        await keyboard.pressKey(Key.Left);
+        // ダイアログの端が無くなったことを確認して Left 長押しを外す
+        nextStepOnCallback();
+        await keyboard.releaseKey(Key.Left);
+    } else {
+        console.log("効果のダイアログが発生しなかった");
+    }
+
+    // スタートにカーソルをあわせる
+    await keyboard.type(Key.Down)
+    // TODO:後でbot検知されないように修正する
+    await sleep(100);
+    // スタートをクリックする
+    await keyboard.type(Key.Enter);
+
+    // はい が出てきたら Enter を押す
+    await nextStepOnCallback();
+    await keyboard.type(Key.Enter);
+
+    // 終了ダイアログを検知して左キーを長押しする
+    await nextStepOnCallback();
+    await keyboard.pressKey(Key.Left);
+    
+    // 錬金をする が出てきたら左キーを離す.Enterを押す
+    await nextStepOnCallback();
+    await keyboard.releaseKey(Key.Left);
+    await keyboard.type(Key.Enter);
 };
 
 
