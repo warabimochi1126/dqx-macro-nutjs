@@ -91,10 +91,12 @@ async function main () {
     // 新品のランプだったらダイアログが出てくるのでそれで新品かどうか判別する
     // 新しい錬金ランプのダイアログが出るまで待つ
     await sleep(1000);
-    const newLampFlag = true;
+    const newLampFlag = isImageEqual(new Region(1165, 814, 60, 32), `${imgPath}/hai.png`);
     if (newLampFlag) {
         console.log("ランプが新品だと判定された");
         await keyboard.type(Key.Up);
+        // TODO:後でsleep調整する
+        await sleep(100);
         await keyboard.type(Key.Enter);
     } else {
         console.log("ランプが中古品だと判定された");
@@ -102,24 +104,30 @@ async function main () {
 
     // どれを？ が出てきたら判定ロジックを走らせる
     // 錬金効果の一番下が (錬金効果を付けよう) なら Enter そうでなければ Down 一番下まできたら Right
-    // 
-    await nextStepOnCallback(() => {});
-    if(isImageEqual()) {
-        await keyboard.type(Key.Down);
-        itemCount++;
-        console.log("錬金が最大数付いているという判定が下された");
-        if (itemCount % 10 == 0) {
-            // TODO: 4/4のような画像を複数枚用意して最後までいったか判定する
-            // 最後までいってたらそこで関数の実行を止める 
+    await nextStepOnCallback(() => isImageEqual(new Region(615, 267, 100, 25), `${imgPath}/dorewo.png`));
 
-            await keyboard.type(Key.Right);
-            // TODO:bot検知のために遅延を改良する
-            await sleep(100);
+    // 錬金効果の一番下が (錬金効果を付けよう) かどうか判定する
+    while (true) {
+        if(isImageEqual(new Region(980, 355, 220, 30), `${imgPath}/renkinkoukawotukeyou.png`)) {
+            console.log("錬金が最大数ついていないという判定が下された");
+            break;
+        } else {
+            console.log("錬金が最大数付いているという判定が下された");
             await keyboard.type(Key.Down);
-
+            itemCount++;
+            if (itemCount % 10 == 0) {
+                console.log("一つ右のページに飛ばす");
+                // TODO: 4/4のような画像を複数枚用意して最後までいったか判定する
+                // 最後までいってたらそこで関数の実行を止める
+                // 1/1 だとそれが出ないのでそこを考える
+                if ()
+                await keyboard.type(Key.Right);
+                // TODO:bot検知のために遅延を改良する
+                await sleep(100);
+                await keyboard.type(Key.Down);
+    
+            }
         }
-    } else {
-        console.log("錬金が最大数ついていないという判定が下された");
     }
 
     // TODO:後でsleep入れて検知誤魔化す
