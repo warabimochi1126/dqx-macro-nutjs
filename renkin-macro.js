@@ -66,7 +66,7 @@ function isFirstPage() {
 
     // TODO:1/2.1/3の画像を集める
     // TODO:1/1 ならなにもないからなにもないことを判定条件に使うと良いという考えを記しておく
-    const imgPathArray = [`${imgPath}/2on2.png`, `${imgPath}/3on3.png`, `${imgPath}/4on4.png`];
+    const imgPathArray = [`${imgPath}/1-1.png`, `${imgPath}/1-2.png`, `${imgPath}/1-3.png, ${imgPath}/1-4.png`];
 
     for (let i = 0; i < imgPathArray.length; i++) {
         const isImageMatched = isImageEqual(new Region(870, 265, 40, 30), imgPathArray[i]);
@@ -134,7 +134,7 @@ async function main () {
             // Right + Down いれた時に 1/4のように最初のページに戻っていたら1周したと判定する
             if (itemCount % 10 === 0) {
                 if (isFirstPage()) {
-                    console.log("最初のページに返ってきたので処理の実行を完了する");
+                    console.log("最初のページに返ってきたので処理の実行を終了する");
                     return;
                 } else {
                     await keyboard.type(Key.Right); // 右のページに移動する
@@ -155,21 +155,21 @@ async function main () {
 
 
     // どれをつける？ が出てきたらEnterを押す
-    await nextStepOnCallback(() => {});
+    await nextStepOnCallback(() => isImageEqual(new Region(620, 265, 163, 30), `${imgPath}/dorewotukeru.png`));
     await keyboard.type(Key.Enter);         // 錬金効果を選択する
 
     // ふつうに付ける が出てきたらEnterを押す
-    await nextStepOnCallback(() => {});
+    await nextStepOnCallback(() => isImageEqual(new Region(1080, 818, 163, 27), `${imgPath}/hutuunitukeru.png`));
     await keyboard.type(Key.Enter);         // ふつうに付けるを選択する
 
     // どうする？ が出てきたら効果のダイアログが発生しているか判定する
-    await nextStepOnCallback();
-    if (isImageEqual()) {
+    await nextStepOnCallback(() => isImageEqual(new Region(600, 253, 125, 30), `${imgPath}/dousuru.png`));
+    if (isImageEqual(new Region(1000, 866, 125, 6), `${imgPath}/dialog-top.png`)) {
         console.log("効果のダイアログが発生した");
         // ダイアログが発生したタイミングで Left を長押しする
         await keyboard.pressKey(Key.Left);
         // ダイアログの端が無くなったことを確認して Left 長押しを外す
-        nextStepOnCallback();
+        nextStepOnCallback(() => !isImageEqual(new Region(600, 253, 125, 30), `${imgPath}/dousuru.png`));
         await keyboard.releaseKey(Key.Left);
     } else {
         console.log("効果のダイアログが発生しなかった");
@@ -183,14 +183,14 @@ async function main () {
     await keyboard.type(Key.Enter);
 
     // はい が出てきたら Enter を押す
-    await nextStepOnCallback();
+    await nextStepOnCallback(() => isImageEqual(new Region(1165, 814, 60, 32), `${imgPath}/hai.png`));
     await keyboard.type(Key.Enter);
 
     // 終了ダイアログを検知して左キーを長押しする
-    await nextStepOnCallback();
+    await nextStepOnCallback(() => isImageEqual(new Region(1000, 866, 125, 6), `${imgPath}/dialog-top.png`));
     await keyboard.pressKey(Key.Left);
     
-    // 錬金をする が出てきたら左キーを離す.Enterを押す
+    // はい が出てきたら左キーを離す.Enterを押す
     await nextStepOnCallback();
     await keyboard.releaseKey(Key.Left);
     await keyboard.type(Key.Enter);
@@ -198,3 +198,7 @@ async function main () {
 
 
 main();
+
+
+
+// TODO:家帰ってきたら 終了時ダイアログ発生を検知するようにする
