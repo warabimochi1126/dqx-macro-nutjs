@@ -59,15 +59,31 @@ async function nextStepOnCallback(callback) {
     }
 }
 
+// ページが最後まで到達しているか返す関数
 
+function isFirstPage() {
+    const imgPath = "correct-img/renkin/taisyousoubi_retume";
+
+    // TODO:1/2.1/3の画像を集める
+    // TODO:1/1 ならなにもないからなにもないことを判定条件に使うと良いという考えを記しておく
+    const imgPathArray = [`${imgPath}/2on2.png`, `${imgPath}/3on3.png`, `${imgPath}/4on4.png`];
+
+    for (let i = 0; i < imgPathArray.length; i++) {
+        const isImageMatched = isImageEqual(new Region(870, 265, 40, 30), imgPathArray[i]);
+        // 渡しているページ画像を比較して一致していればtrueを返す
+        // なければ false を返す
+        if (isImageMatched) {
+               return true;
+        }
+    }
+    return false;
+}
 
 
 
 
 // コマンドラインの第1引数に錬金する装備数を入力する
 const imgPath = "correct-img/renkin";
-const itemCountMax = process.argv[2];
-const itemCount = 1;
 
 async function main () {
     // 起動待ち
@@ -113,34 +129,38 @@ async function main () {
             break;
         } else {
             console.log("錬金が最大数付いているという判定が下された");
-            await keyboard.type(Key.Down);
-            itemCount++;
-            if (itemCount % 10 == 0) {
-                console.log("一つ右のページに飛ばす");
-                // TODO: 4/4のような画像を複数枚用意して最後までいったか判定する
-                // 最後までいってたらそこで関数の実行を止める
-                // 1/1 だとそれが出ないのでそこを考える
-                if ()
-                await keyboard.type(Key.Right);
-                // TODO:bot検知のために遅延を改良する
-                await sleep(100);
-                await keyboard.type(Key.Down);
-    
+            // 基本的に Down 最後尾までいったら Right + Down 
+            // 先に最後尾かどうかのチェックが入る
+            // Right + Down いれた時に 1/4のように最初のページに戻っていたら1周したと判定する
+            if (itemCount % 10 === 0) {
+                if (isFirstPage()) {
+                    console.log("最初のページに返ってきたので処理の実行を完了する");
+                    return;
+                } else {
+                    await keyboard.type(Key.Right); // 右のページに移動する
+                    // TODO:sleepを改良する
+                    await sleep(100);
+                    await keyboard.type(Key.Down);  // ページの一番上のアイテムにカーソルを合わせる
+                    itemCount++;
+                }
+            } else {
+                await keyboard.type(Key.Down);      // 一つ下の装備にカーソルを合わせる
+                itemCount++;
             }
         }
     }
 
     // TODO:後でsleep入れて検知誤魔化す
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);         // カーソルをあわせた装備を選択する
 
 
     // どれをつける？ が出てきたらEnterを押す
     await nextStepOnCallback(() => {});
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);         // 錬金効果を選択する
 
     // ふつうに付ける が出てきたらEnterを押す
     await nextStepOnCallback(() => {});
-    await keyboard.type(Key.Enter);
+    await keyboard.type(Key.Enter);         // ふつうに付けるを選択する
 
     // どうする？ が出てきたら効果のダイアログが発生しているか判定する
     await nextStepOnCallback();
@@ -156,7 +176,7 @@ async function main () {
     }
 
     // スタートにカーソルをあわせる
-    await keyboard.type(Key.Down)
+    await keyboard.type(Key.Down);
     // TODO:後でbot検知されないように修正する
     await sleep(100);
     // スタートをクリックする
