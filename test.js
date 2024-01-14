@@ -8,9 +8,9 @@ function sleep(ms) {
 (async () => {
   await sleep(1000);
   
-  await mouse.move(new Point(1080, 810));
+  await mouse.move(new Point(1170, 810));
 
-  await screen.captureRegion("rarara", new Region(1080, 815, 125, 30));
+  await screen.captureRegion("rarara", new Region(615, 293, 80, 30));
 
   const temp = sharp("rarara.png");
 
@@ -19,4 +19,5 @@ function sleep(ms) {
   temp.toFile("rararaoutput.png");
 
   console.log(await screen.colorAt(new Point(1000, 870)));  
+
 })();
